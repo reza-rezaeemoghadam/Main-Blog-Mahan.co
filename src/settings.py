@@ -59,15 +59,16 @@ INSTALLED_APPS = [
     'drf_yasg',                 # Swagger documentation
     'parler',                   # Django parler for multilingual support
     "corsheaders",              # CORS middleware
+    "django_ckeditor_5"         # Django CKEditor RichText editor
 ]
 
 MIDDLEWARE = [
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',             # Internationalization purpose
     'corsheaders.middleware.CorsMiddleware',                 # CORS middleware
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -79,7 +80,7 @@ ROOT_URLCONF = 'src.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'temlpates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -163,15 +164,14 @@ LOCALE_PATHS = [
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static/'),
 ]
+STATIC_URL = '/static/'
 
 # Medua files (Images, Videos, etc.)
+MEDIA_ROOT = 'media/'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -193,7 +193,7 @@ SWAGGER_SETTINGS = {
 }
 
 # JWT configuration
-SIMPLE_JWT = { 'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5), 
+SIMPLE_JWT = {'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5), 
               'REFRESH_TOKEN_LIFETIME': timedelta(days=1), 
               'ROTATE_REFRESH_TOKENS': True, 
               'BLACKLIST_AFTER_ROTATION': True, 
@@ -209,3 +209,29 @@ SIMPLE_JWT = { 'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
 
 # CORS configuration
 CORS_ALLOWED_ORIGINS = []
+
+
+# Ckeditor configuration
+CKEDITOR_5_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage' 
+CKEDITOR_5_CONFIGS = {
+    'default': {
+        'toolbar': [
+            'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', 'fontSize', 'fontFamily', 'fontColor'
+        ],
+        'font': {
+            'options': [
+                'Arial', 'Times New Roman', 'Georgia', 'Courier New', 'Verdana'
+            ]
+        },
+        'fontSize': {
+            'options': [
+                'small', 'normal', 'big', 'huge'
+            ]
+        },
+        'fontColor': {
+            'options': [
+                'black', 'red', 'green', 'blue', 'yellow', 'purple', 'orange', 'pink'
+            ]
+        }
+    }
+}

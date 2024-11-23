@@ -3,26 +3,36 @@ from rest_framework import serializers
 from rest_framework.serializers import PrimaryKeyRelatedField
 
 # Import models
-from blog.models import Post, Comment
+from blog.models import Post, Comment, Media
 
-# Create serializers
+
+# Create base serializer
 class MediaSerializer(serializers.ModelSerializer):
-    pass
     class Meta:
-        pass
+        model = Media
+        fields = ['media_type','description','file']
 
-class PostSerializer(serializers.ModelSerializer):
-    pass
+class BasePostSerializer(serializers.ModelSerializer):
+    media = MediaSerializer(many=False, read_only=True)
     class Meta:
         model = Post
-        field = []
+        fields = ['title', 'media']
+
+# Create serializers
+class FullPostSerializer(BasePostSerializer):
+    class Meta(BasePostSerializer.Meta):
+        fields = BasePostSerializer.Meta.fields + ['body', 'published_at', 'author']
+
+class SummaryPostSerializer(BasePostSerializer):
+    class Meta(BasePostSerializer.Meta):
+        fields = BasePostSerializer.Meta.fields + ['id','abstract']
 
 class CommentSerializer(serializers.ModelSerializer):
     post = PrimaryKeyRelatedField(queryset=Post.objects.all(), required=True)
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
     phone  = serializers.CharField(required=True)
-
+    content = serializers.CharField(required=True)
     class Meta:
         model = Comment
         fields = ["post", "first_name", "last_name", "phone", "content"]
