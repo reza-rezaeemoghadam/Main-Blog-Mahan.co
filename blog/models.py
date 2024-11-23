@@ -8,9 +8,9 @@ from django.utils.translation import gettext_lazy as _
 from parler.models import TranslatableModel, TranslatedFields
 
 # Importing text editor
-from ckeditor.fields import RichTextField
+from django_ckeditor_5.fields import CKEditor5Field
 
-# Importing needed Const from settings
+ # Importing needed Const from settings
 from src.settings import MEDIA_ROOT
 
 # Importing custom models
@@ -59,7 +59,7 @@ class Post(TranslatableModel):
     translations = TranslatedFields(
         title = models.CharField(max_length=100, verbose_name=_('post|title')),
         abstract = models.CharField(max_length=200,  verbose_name=_('post|abstract')),
-        body = RichTextField(verbose_name=_('post|body'))
+        body = CKEditor5Field(config_name='default', verbose_name=_('post|body'))
     )
     #TODO: later try to implement image field with Base64 encoding
     published_at = models.DateTimeField(blank=True, null=True)
@@ -107,7 +107,7 @@ class Comment(TranslatableModel):
         if not self.id:
             self.created_at = timezone.now()
         self.updated_at = timezone.now()
-        return super(Post, self).save(*args, **kwargs)
+        return super(Comment, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'Comment by {self.author} on {self.post}'
