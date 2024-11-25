@@ -57,7 +57,7 @@ class Category(TranslatableModel):
 
 class Post(TranslatableModel):
     translations = TranslatedFields(
-        title = models.CharField(max_length=100, verbose_name=_('post|title')),
+        title = models.CharField(max_length=100, verbose_name=_('post|title'), unique=True),
         abstract = models.CharField(max_length=200,  verbose_name=_('post|abstract')),
         body = CKEditor5Field(config_name='default', verbose_name=_('post|body'))
     )
@@ -66,7 +66,7 @@ class Post(TranslatableModel):
     is_published = models.BooleanField(default=False, verbose_name=_('post|is_published'))
     is_draft = models.BooleanField(default=False, verbose_name=_('post|draft'))
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('post|created_by'))
-    media = models.ForeignKey(Media , on_delete=models.DO_NOTHING, null=True, verbose_name=_('post|media'))
+    media = models.ForeignKey(Media , on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('post|media'))
 
     created_at = models.DateTimeField(editable=False)
     updated_at = models.DateTimeField()
@@ -89,9 +89,6 @@ class Post(TranslatableModel):
     class Meta:
         verbose_name = _('Post')
         verbose_name_plural = _('Posts')
-        permissions = [
-            ("can_manage_posts", "Can manage posts"),
-        ]
 
 class Comment(TranslatableModel):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments', verbose_name=_('comment|post'))
@@ -110,7 +107,7 @@ class Comment(TranslatableModel):
         return super(Comment, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f'Comment by {self.author} on {self.post}'
+        return f'Comment by {self.first_name} {self.last_name} on {self.post}'
     
     class Meta:
         verbose_name = _('Comment')
