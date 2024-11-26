@@ -3,10 +3,15 @@ from rest_framework import serializers
 from rest_framework.serializers import PrimaryKeyRelatedField
 
 # Import models
-from blog.models import Post, Comment, Media
+from blog.models import Post, Comment, Media, Category
 
 
 # Create base serializer
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = "__all__"
+
 class MediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Media
@@ -14,9 +19,11 @@ class MediaSerializer(serializers.ModelSerializer):
 
 class BasePostSerializer(serializers.ModelSerializer):
     media = MediaSerializer(many=False, read_only=True)
+    category = CategorySerializer(many=False, read_only=True)
+    
     class Meta:
         model = Post
-        fields = ['title', 'media']
+        fields = ['id','title', 'media']
 
 # Create serializers
 class FullPostSerializer(BasePostSerializer):
