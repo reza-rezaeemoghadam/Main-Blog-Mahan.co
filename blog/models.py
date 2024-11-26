@@ -38,9 +38,9 @@ class Category(TranslatableModel):
         description = models.TextField(blank=True, verbose_name=_('category|description'))
     )
     
-    parent = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, verbose_name=_('category|subcategory'))
-    created_at = models.DateTimeField(editable=False)
-    updated_at = models.DateTimeField()
+    parent = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, blank=True, verbose_name=_('category|subcategory'))
+    created_at = models.DateTimeField(editable=False, blank=True)
+    updated_at = models.DateTimeField(blank=True)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -64,12 +64,13 @@ class Post(TranslatableModel):
     #TODO: later try to implement image field with Base64 encoding
     published_at = models.DateTimeField(blank=True, null=True)
     is_published = models.BooleanField(default=False, verbose_name=_('post|is_published'))
-    is_draft = models.BooleanField(default=False, verbose_name=_('post|draft'))
+    is_draft = models.BooleanField(default=False, verbose_name=_('post|is_draft'))
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('post|created_by'))
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name=_('post|category'))
     media = models.ForeignKey(Media , on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('post|media'))
 
-    created_at = models.DateTimeField(editable=False)
-    updated_at = models.DateTimeField()
+    created_at = models.DateTimeField(editable=False, blank=True)
+    updated_at = models.DateTimeField(blank=True)
 
     def publish(self): 
         self.published_at = timezone.now() 
@@ -96,8 +97,8 @@ class Comment(TranslatableModel):
     last_name = models.CharField(max_length=30, verbose_name=_('comment|last_name'))
     phone = models.CharField(max_length=16, verbose_name=_('comment|phone'))
     verify_status = models.BooleanField(default=False)
-    created_at = models.DateTimeField(editable=False)
-    updated_at = models.DateTimeField()
+    created_at = models.DateTimeField(editable=False, blank=True)
+    updated_at = models.DateTimeField(blank=True)
     translations = TranslatedFields(content = models.TextField(verbose_name=_('comment|content')))
 
     def save(self, *args, **kwargs):

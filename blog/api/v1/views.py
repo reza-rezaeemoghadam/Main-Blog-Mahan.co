@@ -19,11 +19,11 @@ class CommentCreateAPIView(CreateAPIView):
     permission_classes = [IsAuthenticated]
 
 class PostDetailView(RetrieveAPIView):
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().exclude(is_draft=True)
     serializer_class = FullPostSerializer
 
 class PostListAPIView(ListAPIView):
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().exclude(is_draft=True)
     serializer_class = FullPostSerializer
 
 class PostMainPageView(ListAPIView):
@@ -32,7 +32,7 @@ class PostMainPageView(ListAPIView):
     def get_queryset(self):
         top_n = self.request.query_params.get('top', None)
         current_language = translation.get_language()
-        queryset = self.model.objects.language(current_language).all().order_by("-published_at")
+        queryset = self.model.objects.language(current_language).all().order_by("-published_at").exclude(is_draft=True)
         if top_n and (len(queryset)<=int(top_n)):
             return queryset[:int(top_n)] 
         else:
