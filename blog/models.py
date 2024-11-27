@@ -34,7 +34,7 @@ class Media(models.Model):
 
 class Category(TranslatableModel):
     translations = TranslatedFields(
-        name = models.CharField(max_length=50 , verbose_name=_('category|name')),
+        name = models.CharField(max_length=50 , unique=True, verbose_name=_('category|name')),
         description = models.TextField(blank=True, verbose_name=_('category|description'))
     )
     
