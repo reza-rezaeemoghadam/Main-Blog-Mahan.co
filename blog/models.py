@@ -16,7 +16,6 @@ from src.settings import MEDIA_ROOT
 # Importing custom models
 
 # Create models
-
 class Media(models.Model): 
     MEDIA_TYPES = [ ('image', 'Image'), 
                    ('video', 'Video'), 
@@ -66,8 +65,8 @@ class Post(TranslatableModel):
     is_published = models.BooleanField(default=False, verbose_name=_('post|is_published'))
     is_draft = models.BooleanField(default=False, verbose_name=_('post|is_draft'))
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('post|created_by'))
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name=_('post|category'))
-    media = models.ForeignKey(Media , on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('post|media'))
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name=_('post|category'), related_name="post")
+    media = models.ForeignKey(Media , on_delete=models.SET_NULL, blank=True, null=True, verbose_name=_('post|media'), related_name="post")
 
     created_at = models.DateTimeField(editable=False, blank=True)
     updated_at = models.DateTimeField(blank=True)
@@ -79,10 +78,19 @@ class Post(TranslatableModel):
         self.save()
 
     def save(self, *args, **kwargs):
+        # Handling is_published and is_draft
+        if self.is_published:
+            self.is_draft = False
+        if not self.is_draft and not self.is_published:
+            self.is_draft = True
+        # Handling author registration
+        if not self.id and 'request' in kwargs: 
+            self.author = kwargs.pop('request').user        
+        # Handling created_at and updated_at 
         if not self.id:
             self.created_at = timezone.now()
         self.updated_at = timezone.now()
-        return super(Post, self).save(*args, **kwargs)
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
