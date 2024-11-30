@@ -41,6 +41,10 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 # Application definition
 
 INSTALLED_APPS = [
+    # third-party apps
+    "admin_interface",          # Django admin interface
+    "colorfield",               # Django color
+
     # django built-in apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -59,7 +63,7 @@ INSTALLED_APPS = [
     'drf_yasg',                 # Swagger documentation
     'parler',                   # Django parler for multilingual support
     "corsheaders",              # CORS middleware
-    "django_ckeditor_5"         # Django CKEditor RichText editor
+    "django_ckeditor_5",        # Django CKEditor RichText editor
 ]
 
 MIDDLEWARE = [
@@ -210,6 +214,9 @@ SIMPLE_JWT = {'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
 # CORS configuration
 CORS_ALLOWED_ORIGINS = []
 
+# Django admin interface configuration
+X_FRAME_OPTIONS = "SAMEORIGIN"
+SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
 # Ckeditor configuration
 CKEDITOR_5_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage' 
