@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     # custom apps
     'blog',
     'user',
+    'website',
     
     # third-party apps
     'rest_framework',           # REST framework
@@ -149,12 +150,14 @@ USE_TZ = True
 LANGUAGES = (
     ('en', _('English')),
     ('fa', _('Farsi')),
+    ('ar', _('Arabic')),
 )
 
 PARLER_LANGUAGES = {
     None: (
         {'code': 'en',}, # English
         {'code': 'fa',}, # Farsi
+        {'code': 'ar',}, # Arabic
     ),
     'default': {
         'fallbacks': ['en'],

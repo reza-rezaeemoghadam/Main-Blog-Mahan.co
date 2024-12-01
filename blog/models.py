@@ -20,12 +20,16 @@ class Media(models.Model):
     MEDIA_TYPES = [ ('image', 'Image'), 
                    ('video', 'Video'), 
                    ('document', 'Document'), ] 
-    file = models.FileField(upload_to='media/') 
+    file = models.FileField(upload_to='media/post/') 
     media_type = models.CharField(max_length=10, choices=MEDIA_TYPES) 
     description = models.TextField(blank=True, verbose_name=_("Description")) 
 
     def __str__(self): 
         return self.file.name
+    
+    class Meta:
+        verbose_name = _("Media")
+        verbose_name_plural = _("Media")
 
 # TODO: Implementing Tags is the second priority
 # class Tag(TranslatableModel):
