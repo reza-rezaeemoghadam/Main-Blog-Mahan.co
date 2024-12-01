@@ -8,5 +8,5 @@ from website.api.v1.veiws import SectionRetrieveAPIView
 app_name = "website"
 
 urlpatterns = [
-    path('website/<int:section_id>/', SectionRetrieveAPIView.as_view(), name="section_retrieve"),
+    path('website/<int:pk>/', SectionRetrieveAPIView.as_view(), name="section_retrieve"),
 ]
