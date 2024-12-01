@@ -61,7 +61,7 @@ class CommentAdmin(TranslatableAdmin):
                urlencode({"post__id:": f"{obj.post.id}"}))
         return format_html('<a href="{}">{}</a>',url, obj.post.title)
         
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(TranslatableAdmin):
     list_display = ['name', 'description', "parent", 'post']
     search_fields = ['name']
     list_filter = ['parent']

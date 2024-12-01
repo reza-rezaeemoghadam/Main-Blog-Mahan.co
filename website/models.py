@@ -75,6 +75,9 @@ class ContactUs(TranslatableModel):
         self.updated_at = timezone.now()
         return super(ContactUs, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return f"{self.name}-{self.email}"
+
     class Meta:
         verbose_name = _("Contact Us")
         verbose_name_plural = _("Contact Us")
@@ -115,6 +118,9 @@ class SocialLinks(TranslatableModel):
         self.updated_at = timezone.now()
         return super(SocialLinks, self).save(*args, **kwargs)
     
+    def __str__(self):
+        return f"{self.name}"
+
     class Meta:
         verbose_name = _("Social Link")
         verbose_name_plural = _("Social Links")
