@@ -38,7 +38,7 @@ class Part(TranslatableModel):
     )
     number = models.SmallIntegerField(verbose_name=_('part|number'))   
     url = models.URLField(verbose_name=_("part|url"))
-    section  = models.ForeignKey(Section, on_delete=models.CASCADE, verbose_name=_("part|section"))
+    section  = models.ForeignKey(Section, on_delete=models.CASCADE, related_name="parts", verbose_name=_("part|section"))
     created_at = models.DateTimeField(editable=False, blank=True)
     updated_at = models.DateTimeField(blank=True)
 
@@ -63,7 +63,7 @@ class ContactUs(TranslatableModel):
         content = models.TextField(verbose_name=_("contactus|content")),
     )
     website = models.URLField(verbose_name=_("contactus|website")),
-    section = models.OneToOneField(Section, on_delete=models.CASCADE, verbose_name=_("contactus|section"))
+    section = models.OneToOneField(Section, on_delete=models.CASCADE, related_name="contact_us", verbose_name=_("contactus|section"))
     created_at = models.DateTimeField(editable=False, blank=True)
     updated_at = models.DateTimeField(blank=True)
 
@@ -83,7 +83,7 @@ class VisitUs(TranslatableModel):
         phone = models.CharField(max_length=16, verbose_name=_("visius|phone")),
         email = models.EmailField(verbose_name=_("visitus|email")),        
     )
-    section = models.OneToOneField(Section, on_delete=models.CASCADE, verbose_name=_("visitus|section"))
+    section = models.OneToOneField(Section, on_delete=models.CASCADE, related_name="visit_us", verbose_name=_("visitus|section"))
     created_at = models.DateTimeField(editable=False, blank=True)
     updated_at = models.DateTimeField(blank=True)
 
@@ -103,7 +103,7 @@ class SocialLinks(TranslatableModel):
         icon = models.ImageField(upload_to="media/icons/")
     )
     url = models.URLField(verbose_name="social|url")
-    section = models.OneToOneField(Section, on_delete=models.CASCADE, verbose_name=_("social|section"))
+    section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name="social_links", verbose_name=_("social|section"))
     created_at = models.DateTimeField(editable=False, blank=True)
     updated_at = models.DateTimeField(blank=True)
 

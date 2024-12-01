@@ -6,6 +6,16 @@ __pycache__/
 # C extensions
 *.so
 
+# Ignore all migrations
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# Ignore media
+/media/
+
+# Ignore locale
+/locale
+
 # Distribution / packaging
 .Python
 build/
