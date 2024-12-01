@@ -9,18 +9,18 @@ from website.models import Section, Part
 class BasePartSerializer(ModelSerializer):
     class Meta:
         model = Part
-        field = ['id','title','sub_title', 'image', 'url', 'number']
+        fields = ['id','title','sub_title', 'image', 'url', 'number']
 
 class BaseSectionSerializer(ModelSerializer):
     class Meta:
         model = Section
-        field = ['id', 'title', 'content', 'number']
+        fields = ['id', 'title', 'content', 'number']
 # Implementing serializers
 class FullPortionPartSerialzer(BasePartSerializer):
-    class Meta:
-        field = BasePartSerializer.Meta.field + ['section']
+    class Meta(BasePartSerializer.Meta):
+        fields = BasePartSerializer.Meta.fields + ['section']
 
-class FullPortionSectionSerializers(ModelSerializer):
-    parts = FullPortionPartSerialzer(many=True, readonly=True)
-    class Meta:
-        field = BaseSectionSerializer.Meta.field + ['parts']
+class FullPortionSectionSerializers(BaseSectionSerializer):
+    parts = FullPortionPartSerialzer(many=True, read_only=True)
+    class Meta(BaseSectionSerializer.Meta):
+        fields = BaseSectionSerializer.Meta.fields + ['parts']
