@@ -3,6 +3,8 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+# Importing extra modules
+
 # Importing praler modules
 from parler.models import TranslatableModel, TranslatedFields
 
@@ -34,8 +36,8 @@ class Part(TranslatableModel):
                   title = models.CharField(max_length=60, verbose_name=_("part|title")),
                   sub_title = models.CharField(max_length=50, verbose_name=_("part|sub_title")),
                   content = models.TextField(verbose_name=_("part|content")),
-                  image = models.ImageField(upload_to="media/landing/", verbose_name=_("part|image"))
     )
+    image = models.ImageField(upload_to="media/landing/", verbose_name=_("part|image"))
     number = models.SmallIntegerField(verbose_name=_('part|number'))   
     url = models.URLField(verbose_name=_("part|url"))
     section  = models.ForeignKey(Section, on_delete=models.CASCADE, related_name="parts", verbose_name=_("part|section"))
@@ -100,8 +102,8 @@ class VisitUs(TranslatableModel):
 class SocialLinks(TranslatableModel):
     translation = TranslatedFields(
         name = models.CharField(max_length=50, unique=True, verbose_name=_("social|name")),
-        icon = models.ImageField(upload_to="media/icons/")
     )
+    icon = models.ImageField(upload_to="media/icons/")
     url = models.URLField(verbose_name="social|url")
     section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name="social_links", verbose_name=_("social|section"))
     created_at = models.DateTimeField(editable=False, blank=True)
