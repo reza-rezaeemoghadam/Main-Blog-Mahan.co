@@ -12,6 +12,7 @@ from website.models import Section, Part, ContactUs, VisitUs, SocialLinks
 # Implementing custom admin models
 class SectionAdmin(TranslatableAdmin):
     list_display = ['title', 'content', 'parts', 'updated_at', 'number'] 
+    search_fields = ['title', 'number']
     list_filter = ['updated_at']   
 
     def content(self, obj):
@@ -25,17 +26,17 @@ class SectionAdmin(TranslatableAdmin):
         return format_html('<a href="{}">{} related parts</a>', url, count)
     
 class PartAdmin(TranslatableAdmin):
-    list_display = ['title', 'sub_title', 'updated_at', 'sections', 'number']
-    search_fields = ['title', 'sub_title']
+    list_display = ['title', 'sub_title', 'sections', 'updated_at',  'number']
+    search_fields = ['title', 'sub_title', 'number']
     list_filter = ['section']
     def sections(self, obj):
         url = (reverse('admin:website_section_change',args=[obj.section.id]))
         return format_html('<a href="{}">{} </a>', url, obj.section.title)
 
 class ContactUsAdmin(TranslatableAdmin):
-    list_display = ['full_name', 'email', 'updated_at', 'sections']
-    list_filter = ['updated_at', 'section']
+    list_display = ['full_name', 'email', 'updated_at']
     search_fields = ['name', 'email']
+    list_filter = ['updated_at']
     
     def sections(self, obj):
         url = (reverse('admin:website_section_change',args=[obj.section.id]))
@@ -48,6 +49,8 @@ class ContactUsAdmin(TranslatableAdmin):
 
 class VisitUsAdmin(TranslatableAdmin):
     list_display = ['address', 'email', 'updated_at', 'sections']
+    search_fields = ['address', 'email']
+    list_filter = ['updated_at']
 
     def sections(self, obj):
         url = (reverse('admin:website_section_change',args=[obj.section.id]))
@@ -56,8 +59,8 @@ class VisitUsAdmin(TranslatableAdmin):
 
 class SocialLinksAdmin(TranslatableAdmin):
     list_display = ['name', 'updated_at', 'sections']
-    list_filter = ['updated_at', 'section']
     search_fields = ['name']
+    list_filter = ['updated_at', 'section']
 
     def sections(self, obj):
         url = (reverse('admin:website_section_change',args=[obj.section.id]))

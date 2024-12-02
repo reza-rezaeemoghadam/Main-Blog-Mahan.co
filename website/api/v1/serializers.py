@@ -1,4 +1,5 @@
 # Improting rest framework modules
+from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
 # Importing custom models
@@ -27,9 +28,14 @@ class BaseSectionSerializer(ModelSerializer):
         fields = ['id', 'title', 'content', 'number']
 # Implementing serializers
 class FullPortionContactUsSerializer(ModelSerializer):
+    name = serializers.CharField(required=True)
+    email = serializers.EmailField(required=True)
+    phone = serializers.CharField(required=True)
+    content = serializers.CharField(required=True)
+    website = serializers.URLField(required=True)
     class Meta:
         model = ContactUs
-        fields = '__all__'
+        fields = ['name', 'email', 'phone', 'content', 'website']
 
 class FullPortionVisitUsSerializer(ModelSerializer):
     class Meta:
